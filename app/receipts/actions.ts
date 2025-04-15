@@ -2,6 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { ReceiptData } from "@/utils/types";
+import { format, parse } from "date-fns";
 
 // This function fetches all owners from the database
 export async function getAllOwners() {
@@ -92,6 +93,11 @@ export async function createReceiptOnServer(data: ReceiptData) {
 
     const pdf_url = uploadedFile.publicUrl;
 
+    const parsedDate = parse(data.date, "dd-MM-yyyy", new Date());
+
+    // Reformat it back if needed
+    const formattedDate = format(parsedDate, "yyyy-MM-dd");
+
     // Step 3: Insert into receipts table
     const { error: insertError } = await (await supabase)
         .from("receipts")
@@ -100,7 +106,7 @@ export async function createReceiptOnServer(data: ReceiptData) {
             owner_id: data.owner_id,
             owner_name: data.owner_name,
             house_number: data.house_number,
-            date: new Date(data.date).toISOString(),
+            date: formattedDate,
             amount_number: parseInt(data.amount_number),
             amount_words: data.amount_words,
             transaction_mode: data.transaction_mode,

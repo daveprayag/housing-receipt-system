@@ -93,7 +93,7 @@ export default function CreateReceiptPage() {
             receipt_no: data.toString(),
             owner_name: ownerName,
             house_number: houseNumber,
-            date: format(transactionDate, "yyyy-MM-dd"),
+            date: format(transactionDate, "dd-MM-yyyy"),
             amount_number: amountNumber,
             amount_words: amountWords,
             transaction_mode: transactionMode,
